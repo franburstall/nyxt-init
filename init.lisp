@@ -17,6 +17,5 @@
   ((hide-single-source-header-p t)))
 
 ;; turn off follow mode for buffers: it screws the access-time order
-;; Current fails: see issue #1430
-;; (define-configuration buffer-source
-;;   ((prompter:follow-p nil)))
+(define-configuration buffer-source
+  ((prompter:follow-p nil)))
