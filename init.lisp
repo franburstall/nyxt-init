@@ -9,14 +9,6 @@
    ;; (download-engine :renderer)
    (password-interface (make-instance 'password:user-password-store-interface))))
 
-(define-configuration (internal-buffer prompt-buffer editor-buffer)
-  ((default-modes `(emacs-mode ,@%slot-default%))))
-
-(define-configuration (web-buffer nosave-buffer)
-  ((default-modes `(emacs-mode
-		    auto-mode
-		    ,@%slot-default%))))
-
 (define-configuration web-buffer
   ((default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")))
 
