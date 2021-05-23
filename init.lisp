@@ -1,6 +1,8 @@
 (in-package #:nyxt-user)
 
+
 (load (nyxt-init-file "style.lisp"))
+(load (nyxt-init-file "status.lisp"))
 
 (load-after-system :slynk (nyxt-init-file "slynk.lisp"))
 
