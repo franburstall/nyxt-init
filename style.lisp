@@ -125,30 +125,7 @@
       :color "white"
       ))))
 
-(defun my-format-status (window)
-  (let ((buffer (current-buffer window)))
-    (setf (style (status-buffer window)) (my-status-style))
-    (markup:markup
-     (:div :id "container"
-           (:div :id "controls"
-                 (markup:raw (format-status-buttons)))
-           (:div :class "arrow arrow-right"
-                 :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)"  "")
-           (:div :id "url"
-                 (markup:raw
-                  (format-status-load-status buffer)
-                  (format-status-url buffer)))
-           (:div :class "arrow arrow-left"
-                 :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)" "")
-           (:div :id "modes"
-		 :title (format-status-modes buffer window)
-		 "--")))))
-;; TODO
-;; better format status buttons (aware of history state)
-;; better format status url (truncate the url)?
 
-(define-configuration window 
-  ((status-formatter #'my-format-status)))
 
 ;; special case: branch markers on the history tree
 (define-configuration nyxt/history-tree-mode::history-tree-mode
