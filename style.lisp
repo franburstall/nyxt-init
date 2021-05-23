@@ -87,7 +87,7 @@
      ("#container"
       :display "grid"
       ;; Columns: controls, arrow, url, arrow, modes
-      :grid-template-columns "115px 10px auto 10px 20px"
+      :grid-template-columns "50px 10px auto 10px 20px"
       :overflow-y "hidden")
      ("#controls"
       :background-color "#313131"
@@ -96,7 +96,7 @@
       :white-space "nowrap")
      ("#url, #url a.button"
       :background-color "#151515"
-      :color "#ffc000" 
+      :color "#ffc000"
       :min-width "100px"
       :text-overflow "ellipsis"
       :overflow-x "hidden"
@@ -114,17 +114,20 @@
       :text-overflow "ellipsis"
       :overflow-x "hidden"
       :white-space "nowrap")
-     (.button
-      :color "#bdbdb3"
+     (".button, .has-history"
       :text-decoration "none"
       :padding-left "2px"
       :padding-right "2px"
       :margin-left "2px"
       :margin-right "2px")
-     (|.button:hover|
-      :color "white"
-      ))))
-
+     (|\.button:hover|
+      :color "white")
+     (".button"
+      :color "#bdbdb3")
+     (.has-history
+      :color "#ffc000")
+     (|\.has-history:hover|
+      :color "#ffff80"))))
 
 
 ;; special case: branch markers on the history tree
@@ -140,3 +143,4 @@
 	("ul li:only-child::before"
 	 :background-color "#4184e4")))))))
 
+;; out-lier: style lisp-mode
