@@ -58,11 +58,20 @@
 ;; TODO: more complete heuristics for finding the username field
 (defun insert-login (s)
   "Insert string S in first plausible username field."
-  (insert-in-elt s "input[autocomplete=\"username\"]"))
+  (let ((selector (str:join ", " (list
+				  "input[autocomplete=\"username\"]" ;best practice
+				  "input[type=\"email\"]" ;SO, MS
+				  ))))
+    (insert-in-elt s selector)))
 
 (defun insert-pass (s)
-  "Insert string S in first input element of type password."
-  (insert-in-elt s "input[type=\"password\"]"))
+  "Insert string S in first plausible password field."
+  (let ((selector (str:join ", " (list
+				  "input[autocomplete=\"current-password\"]" ;best practice
+				  "input[type=\"password\"]" ;very common
+				  ))))
+    (insert-in-elt s selector)))
+
 
 (define-parenscript focus-element (selector)
   (let ((elt (nyxt/ps:qs document (ps:lisp selector))))
