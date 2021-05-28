@@ -69,6 +69,9 @@
     (unless (null elt)
       (ps:chain elt (focus)))))
 
+(defun focus-submit ()
+  (focus-element "input[type=\"submit\"]"))
+
 ;; user-level entry point
 (define-command fill-credentials (&optional (buffer (current-buffer)))
   "Fill in login credentials in BUFFER."
@@ -88,9 +91,6 @@
 						     :password-name nyxt::password-name))
 	  (nyxt::focus-submit)))
       (echo-warning "No password manager found.")))
-
-(defun focus-submit ()
-  (focus-element "input[type=\"submit\"]"))
 
 ;; TODO: sort out a key-binding for this
 
