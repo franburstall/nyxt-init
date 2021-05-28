@@ -3,6 +3,7 @@
 
 (load (nyxt-init-file "style.lisp"))
 (load (nyxt-init-file "status.lisp"))
+(load (nyxt-init-file "password.lisp"))
 
 (load-after-system :slynk (nyxt-init-file "slynk.lisp"))
 
