@@ -4,8 +4,16 @@
 ;; 
 ;; Limitations:
 ;; 1. Only supports unix pass right now
-;; 2. Detection of the username input element is super-primitive
+;; 2. Detection of the input elements is super-primitive but is a
+;; work-in-progress as we gather more examples.
+;; 3. Two page logins are a bit patchy: google works fine; MS less so.
+;; It would be good to understand how data-bind works.  The two page
+;; stuff would be smoother if we kept a history of logins so that we
+;; could pre-populate the fill-credentials prompt with the last login.
 ;;
+;; TODO:
+;; 1. Fix all limitations!
+;; 2. Filter password names based on current url
 
 ;; first we need to grab data from the password-interface
 (in-package :password)
