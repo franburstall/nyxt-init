@@ -13,7 +13,8 @@
    (password-interface (make-instance 'password:user-password-store-interface))))
 
 (define-configuration web-buffer
-  ((default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")))
+    ((default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")
+     (default-modes `(auto-mode ,@%slot-default%))))
 
 ;; prompt-buffer
 (define-configuration prompt-buffer
