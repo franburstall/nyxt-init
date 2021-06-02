@@ -8,5 +8,5 @@ before running this command."
   (slynk:create-server :port slynk-port :dont-close t)
   (echo "Slynk server started at port ~a" slynk-port))
 
-;; Start slynk by default.
-;; (start-slynk 4006)
+;; Start slynk by default unless one is running already
+(unless nyxt::*run-from-repl-p* (start-slynk 4006))
