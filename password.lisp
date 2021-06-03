@@ -13,7 +13,6 @@
 ;;
 ;; TODO:
 ;; 1. Fix all limitations!
-;; 2. Filter password names based on current url
 
 ;; first we need to grab data from the password-interface
 (in-package :password)
@@ -97,11 +96,13 @@
       (nyxt::with-password (password-interface buffer)
 	(let ((nyxt::password-name
 		(first
-		 (prompt :sources
-			 (list
-			  (make-instance 'nyxt::password-source :buffer buffer
-								:password-instance
-					 (password-interface buffer)))))))
+		 (prompt
+		  :input (quri:uri-domain (url buffer))
+		  :sources
+		  (list
+		   (make-instance 'nyxt::password-source :buffer buffer
+							 :password-instance
+				  (password-interface buffer)))))))
 	  (nyxt::insert-login (password::get-login (password-interface buffer)
 						   :password-name nyxt::password-name))
 	  (nyxt::insert-pass (password::get-password (password-interface buffer)
