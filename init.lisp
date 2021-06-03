@@ -10,7 +10,12 @@
 (define-configuration (buffer)
   ((default-modes `(emacs-mode ,@%slot-default%))
    ;; (download-engine :renderer)
-   (password-interface (make-instance 'password:user-password-store-interface))))
+   (password-interface (make-instance 'password:user-password-store-interface))
+   (override-map (let ((map (make-keymap "override-map")))
+		   (define-key map
+		     "M-x" 'execute-command
+		     "M-n" 'switch-buffer-next
+		     "M-p" 'switch-buffer-previous)))))
 
 (define-configuration web-buffer
     ((default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")
