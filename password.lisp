@@ -68,6 +68,8 @@
   (let ((selector (str:join ", " (list
 				  "input[autocomplete=\"username\"]" ;best practice
 				  "input[type=\"email\"]" ;SO, MS
+				  "input[name=\"user\"]"  ;nextcloud
+				  "input[name=\"username\"]" ;U of B SSO
 				  ))))
     (insert-in-elt s selector)))
 
