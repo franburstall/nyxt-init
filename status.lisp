@@ -23,6 +23,17 @@
    (:a :class (if (forward-history-p) "has-history" "button")
        :title "Forwards" :href (lisp-url '(nyxt/web-mode:history-forwards)) "❯")))
 
+;; truncate url; copy url on click and see full url on hover
+(defun my-format-status-url (buffer)
+  (let ((url (render-url (url buffer))))
+    (markup:markup
+     (:a :class "button"
+	 :title url
+	 :href (lisp-url '(nyxt:copy-url))
+	 (format nil " ~a — ~a"
+		 (str:prune 50 url :ellipsis "…")
+		 (title buffer))))))
+
 (defun my-format-status (window)
   (let ((buffer (current-buffer window)))
     (setf (style (status-buffer window)) (my-status-style))
@@ -35,7 +46,7 @@
            (:div :id "url"
                  (markup:raw
                   (format-status-load-status buffer)
-                  (format-status-url buffer)))
+                  (my-format-status-url buffer)))
            (:div :class "arrow arrow-left"
                  :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)" "")
            (:div :id "modes"
