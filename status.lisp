@@ -30,9 +30,11 @@
      (:a :class "button"
 	 :title url
 	 :href (lisp-url '(nyxt:copy-url))
-	 (format nil " ~a — ~a"
-		 (str:prune 50 url :ellipsis "…")
-		 (title buffer))))))
+	 (if (str:emptyp url)
+	     (title buffer)
+	     (format nil " ~a — ~a"
+		     (str:prune 50 url :ellipsis "…")
+		     (title buffer)))))))
 
 (defun my-format-status (window)
   (let ((buffer (current-buffer window)))
