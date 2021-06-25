@@ -69,8 +69,9 @@
 				  "input[autocomplete=\"username\"]" ;best practice
 				  "input[type=\"email\"]" ;SO, MS
 				  "input[name=\"user\"]"  ;nextcloud
-				  "input[name=\"username\"]" ;U of B SSO
-				  ))))
+				  "input[name=\"username\"]" ;U of B
+					;SSO
+				  "input[name=\"uname\"]"))))
     (insert-in-elt s selector)))
 
 (defun insert-pass (s)
