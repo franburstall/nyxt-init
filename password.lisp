@@ -103,6 +103,7 @@
 		  :sources
 		  (list
 		   (make-instance 'nyxt::password-source :buffer buffer
+							 :actions nil
 							 :password-instance
 				  (password-interface buffer)))))))
 	  (nyxt::insert-login (password::get-login (password-interface buffer)
