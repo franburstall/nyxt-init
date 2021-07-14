@@ -4,7 +4,7 @@
 (in-package #:nyxt-user)
 
 ;; generalities: background, text colour, buttons and links
-(define-configuration (internal-buffer prompt-buffer editor-buffer)
+(define-configuration (internal-buffer prompt-buffer editor-buffer panel-buffer)
   ((style
     (str:concat
      %slot-default%
