@@ -61,17 +61,27 @@
   (let ((elt (nyxt/ps:qs document (ps:lisp selector))))
     (unless (null elt) (setf (ps:chain elt value) (ps:lisp s)))))
 
+(define-parenscript find-elt (selector)
+  (let ((elt (nyxt/ps:qs document (ps:lisp selector))))
+    (if (null elt) (ps:lisp nil) (ps:lisp t))))
+
+(defun elt-p (selector)
+  "Non-nil when SELECTOR matches an element in the current buffer."
+  (equal "true" (find-elt selector)))
 
 ;; TODO: more complete heuristics for finding the username field
+(defparameter *username-selectors* (list
+				    "input[autocomplete=\"username\"]" ;best practice
+				    "input[type=\"email\"]" ;SO, MS
+				    "input[name=\"user\"]"  ;nextcloud
+				    "input[name=\"username\"]" ;U of B SSO
+				    "input[name=\"uname\"]")
+  "List of selectors that match usernames in password dialogues.")
+
+
 (defun insert-login (s)
   "Insert string S in first plausible username field."
-  (let ((selector (str:join ", " (list
-				  "input[autocomplete=\"username\"]" ;best practice
-				  "input[type=\"email\"]" ;SO, MS
-				  "input[name=\"user\"]"  ;nextcloud
-				  "input[name=\"username\"]" ;U of B
-					;SSO
-				  "input[name=\"uname\"]"))))
+  (let ((selector (str:join ", " *username-selectors*)))
     (insert-in-elt s selector)))
 
 (defun insert-pass (s)
@@ -114,5 +124,10 @@
 	  (nyxt::focus-submit)))
       (echo-warning "No password manager found.")))
 
-;; TODO: sort out a key-binding for this
+;; Suitable function for buffer-loaded-hook
+(defun fill-credentials-if-login-present (buffer)
+  "Fire `fill-credentials' if page has a login field"
+  (declare (ignore buffer))
+  (if (elt-p (str:join "," *username-selectors*))
+      (fill-credentials)))
 
