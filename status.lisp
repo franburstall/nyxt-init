@@ -17,14 +17,14 @@
 ;; we could do more here.  Example: change the forwards command
 ;; if the history branches here.
 (defun my-format-status-safe-buttons ()
-  (markup:markup
+  (spinneret:with-html-string
    (:a :class "button"  ;; (if (backward-history-p) "has-history" "button")
     :title "Backwards" :href (lisp-url '(nyxt/web-mode:history-backwards)) "❮")
    (:a :class "button"  ;; (if (forward-history-p) "has-history" "button")
     :title "Forwards" :href (lisp-url '(nyxt/web-mode:history-forwards)) "❯")))
 
 (defun my-format-status-unsafe-buttons ()
-  (markup:markup
+  (spinneret:with-html-string
    (:a :class (if (backward-history-p) "has-history" "button")
     :title "Backwards" :href (lisp-url '(nyxt/web-mode:history-backwards)) "❮")
    (:a :class (if (forward-history-p) "has-history" "button")
@@ -33,7 +33,7 @@
 ;; truncate url; copy url on click and see full url on hover
 (defun my-format-status-url (buffer)
   (let ((url (render-url (url buffer))))
-    (markup:markup
+    (spinneret:with-html-string
      (:a :class "button"
 	 :title url
 	 :href (lisp-url '(nyxt:copy-url))
@@ -46,14 +46,14 @@
 (defun my-format-status (window)
   (let ((buffer (current-buffer window)))
     (setf (style (status-buffer window)) (my-status-style))
-    (markup:markup
+    (spinneret:with-html-string
      (:div :id "container"
            (:div :id "controls"
-                 (markup:raw (my-format-status-safe-buttons)))
+                 (:raw (my-format-status-safe-buttons)))
            (:div :class "arrow arrow-right"
                  :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)"  "")
            (:div :id "url"
-                 (markup:raw
+                 (:raw
                   (format-status-load-status buffer)
                   (my-format-status-url buffer)))
            (:div :class "arrow arrow-left"
