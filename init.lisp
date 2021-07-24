@@ -22,7 +22,7 @@
    (default-modes `(auto-mode ,@%slot-default%))
    (buffer-loaded-hook
     (reduce #'hooks:add-hook
-	    (mapcar #'nyxt::make-handler-buffer (list #'fill-credentials-if-login-present))
+	    (mapcar #'nyxt::make-handler-buffer (list #'nyxt::fill-credentials-if-login-present))
 	    :initial-value %slot-default%))))
 
 ;; prompt-buffer
