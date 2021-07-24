@@ -3,7 +3,7 @@
 
 (load (nyxt-init-file "style.lisp"))
 (load (nyxt-init-file "status.lisp"))
-(load (nyxt-init-file "password.lisp"))
+(load (nyxt-init-file "fill-credentials.lisp"))
 
 (load-after-system :slynk (nyxt-init-file "slynk.lisp"))
 
@@ -18,8 +18,12 @@
 		     "M-p" 'switch-buffer-previous)))))
 
 (define-configuration web-buffer
-    ((default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")
-     (default-modes `(auto-mode ,@%slot-default%))))
+  ((default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")
+   (default-modes `(auto-mode ,@%slot-default%))
+   (buffer-loaded-hook
+    (reduce #'hooks:add-hook
+	    (mapcar #'nyxt::make-handler-buffer (list #'fill-credentials-if-login-present))
+	    :initial-value %slot-default%))))
 
 ;; prompt-buffer
 (define-configuration prompt-buffer
