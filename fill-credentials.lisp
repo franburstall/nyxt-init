@@ -3,10 +3,9 @@
 ;; Usage: call `fill-credentials'
 ;; 
 ;; Limitations:
-;; 1. Only supports unix pass right now
-;; 2. Detection of the input elements is super-primitive but is a
+;; 1. Detection of the input elements is super-primitive but is a
 ;; work-in-progress as we gather more examples.
-;; 3. Two page logins are a bit patchy: google works fine; MS less so.
+;; 2. Two page logins are a bit patchy: google works fine; MS less so.
 ;; It would be good to understand how data-bind works.  The two page
 ;; stuff would be smoother if we kept a history of logins so that we
 ;; could pre-populate the fill-credentials prompt with the last login.
@@ -14,45 +13,27 @@
 ;; TODO:
 ;; 1. Fix all limitations!
 
-;; first we need to grab data from the password-interface
-(in-package :password)
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (export 'get-login))
-(defgeneric get-login (password-interface &key password-name service)
-  (:documentation "Return specific login for PASSWORD-NAME and SERVICE as string."))
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (export 'get-password))
-(defgeneric get-password (password-interface &key password-name service)
-  (:documentation "Return specific password for PASSWORD-NAME and SERVICE as string."))
-
-;; implementations for password-store
-
-(defmethod get-login ((password-interface password-store-interface) &key password-name service)
-  (declare (ignore service))
-  (let ((login-line (second
-		     (str:lines
-		      (execute password-interface (list "show" password-name)
-			:output '(:string :stripped t))))))
-    (cond ((and login-line (str:starts-with? "login: " login-line))
-	   (str:substring (length "login: ") nil login-line))
-	  (t
-	   (nyxt:echo-warning "No username found for ~a." password-name)
-	   ""))))
-
-(defmethod get-password ((password-interface password-store-interface) &key password-name service)
-  (declare (ignore service))
-  (let ((password (car
-		   (str:lines
-		    (execute password-interface (list "show" password-name)
-		      :output '(:string :stripped t))))))
-    (when (str:empty? password)
-      (nyxt:echo-warning "Empty password for ~a." password-name))
-    password))
-
-;; now provide a user-level command to do the job
 (in-package :nyxt)
+
+;; Grab data from password-interface
+;;
+;; We go via the clipboard to exploit existing methods on
+;; password-interfaces as suggested by aartaka
+
+(defun get-login (password-interface &key password-name service)
+  "Return specific login for PASSWORD-NAME and SERVICE as string."
+  (password:clip-username password-interface
+			  :password-name password-name
+			  :service service)
+  (trivial-clipboard:text))
+
+(defun get-password (password-interface &key password-name service)
+  "Return specific login for PASSWORD-NAME and SERVICE as string."
+  (password:clip-password password-interface
+			  :password-name password-name
+			  :service service)
+  (trivial-clipboard:text))
 
 ;; utilities to insert or focus various input fields
 
@@ -117,9 +98,9 @@
 							 :actions nil
 							 :password-instance
 				  (password-interface buffer)))))))
-	  (nyxt::insert-login (password::get-login (password-interface buffer)
+	  (nyxt::insert-login (nyxt::get-login (password-interface buffer)
 						   :password-name nyxt::password-name))
-	  (nyxt::insert-pass (password::get-password (password-interface buffer)
+	  (nyxt::insert-pass (nyxt::get-password (password-interface buffer)
 						     :password-name nyxt::password-name))
 	  (nyxt::focus-submit)))
       (echo-warning "No password manager found.")))
