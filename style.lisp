@@ -143,4 +143,12 @@
 	("ul li:only-child::before"
 	 :background-color "#4184e4")))))))
 
-;; out-lier: style lisp-mode
+;; lisp repl
+(define-configuration nyxt/repl-mode:repl-mode
+  ((style
+    (str:concat
+     %slot-default%
+     (cl-css:css
+      '((body
+         :background-color "#212121"
+         :color "#bdbdb3")))))))
