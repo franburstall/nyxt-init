@@ -16,14 +16,7 @@
 
 ;; we could do more here.  Example: change the forwards command
 ;; if the history branches here.
-(defun my-format-status-safe-buttons ()
-  (spinneret:with-html-string
-   (:a :class "button"  ;; (if (backward-history-p) "has-history" "button")
-    :title "Backwards" :href (lisp-url '(nyxt/web-mode:history-backwards)) "❮")
-   (:a :class "button"  ;; (if (forward-history-p) "has-history" "button")
-    :title "Forwards" :href (lisp-url '(nyxt/web-mode:history-forwards)) "❯")))
-
-(defun my-format-status-unsafe-buttons ()
+(defun my-format-status-buttons ()
   (spinneret:with-html-string
    (:a :class (if (backward-history-p) "has-history" "button")
     :title "Backwards" :href (lisp-url '(nyxt/web-mode:history-backwards)) "❮")
@@ -49,7 +42,7 @@
     (spinneret:with-html-string
      (:div :id "container"
            (:div :id "controls"
-                 (:raw (my-format-status-safe-buttons)))
+                 (:raw (my-format-status-buttons)))
            (:div :class "arrow arrow-right"
                  :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)"  "")
            (:div :id "url"
