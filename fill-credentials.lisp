@@ -48,7 +48,7 @@
 
 (defun elt-p (selector)
   "Non-nil when SELECTOR matches an element in the current buffer."
-  (equal "true" (find-elt selector)))
+  (eq t (find-elt selector)))
 
 ;; TODO: more complete heuristics for finding the username field
 (defparameter *username-selectors* (list
