@@ -48,6 +48,7 @@
 
 (defun elt-p (selector)
   "Non-nil when SELECTOR matches an element in the current buffer."
+  ;; `find-elt` returns T or :NULL hence the following unlispy lisp:
   (eq t (find-elt selector)))
 
 ;; TODO: more complete heuristics for finding the username field
