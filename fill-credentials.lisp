@@ -89,16 +89,17 @@
   (nyxt::password-debug-info)
   (if (password-interface buffer)
       (nyxt::with-password (password-interface buffer)
-	(let ((nyxt::password-name
+	(alex:when-let ((nyxt::password-name
 		(first
-		 (prompt
-		  :input (quri:uri-domain (url buffer))
-		  :sources
-		  (list
-		   (make-instance 'nyxt::password-source :buffer buffer
-							 :actions nil
-							 :password-instance
-				  (password-interface buffer)))))))
+		 (ignore-errors
+		  (prompt
+		   :input (quri:uri-domain (url buffer))
+		   :sources
+		   (list
+		    (make-instance 'nyxt::password-source :buffer buffer
+							  :actions nil
+							  :password-instance
+				   (password-interface buffer))))))))
 	  (nyxt::insert-login (nyxt::get-login (password-interface buffer)
 						   :password-name nyxt::password-name))
 	  (nyxt::insert-pass (nyxt::get-password (password-interface buffer)
