@@ -32,3 +32,8 @@
 ;; turn off follow mode for buffers: it screws the access-time order
 (define-configuration buffer-source
   ((prompter:follow-p nil)))
+
+;; auto-fill system information
+(define-configuration browser
+  ((autofills (list (make-autofill :name "system-information"
+				   :fill #'nyxt::system-information)))))
