@@ -110,10 +110,19 @@
 	  (nyxt::focus-submit)))
       (echo-warning "No password manager found.")))
 
+(defun find-buffer-passwords (&optional (buffer (current-buffer)))
+  "List passwords matching BUFFER domain."
+  (let ((domain (quri:uri-domain (url buffer)))
+	(cands (password:list-passwords (password-interface buffer))))
+    (when domain (remove-if-not (lambda (cand) (str:contains? domain cand)) cands))))
+
 ;; Suitable function for buffer-loaded-hook
 (defun fill-credentials-if-login-present (buffer)
-  "Fire `fill-credentials' if page has a login field"
+  "Fire `fill-credentials' if BUFFER has a login field and we know a password."
   (declare (ignore buffer))
-  (if (elt-p (str:join "," *username-selectors*))
+  (when (and  (elt-p (str:join "," *username-selectors*))
+	      (find-buffer-passwords))
       (fill-credentials)))
+
+
 
