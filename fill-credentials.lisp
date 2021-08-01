@@ -101,7 +101,8 @@
 				   :actions nil
 				   :password-instance
 				   (password-interface buffer)
-				   :filter #'prompter:submatches)))))))
+				   :filter #'prompter:submatches
+				   :filter-preprocessor nil)))))))
 	  (nyxt::insert-login (nyxt::get-login (password-interface buffer)
 						   :password-name nyxt::password-name))
 	  (nyxt::insert-pass (nyxt::get-password (password-interface buffer)
