@@ -6,13 +6,13 @@
 ;; detect history (based on https://discourse.atlas.engineer/t/q-how-to-find-out-if-buffer-has-history/108)
 (defun forward-history-p (&optional (buffer (current-buffer)))
   (with-data-unsafe (history (history-path buffer))
-    ;; the following errors out on a new buffer or window
-    (ignore-errors (htree:children (htree:current-owner-node history)))))
+    ;; ignore-errors for new buffer or window:
+    (ignore-errors (htree:children (htree:current (htree:owner history (id buffer)))))))
 
 (defun backward-history-p (&optional (buffer (current-buffer)))
   (with-data-unsafe (history (history-path buffer))
-    ;; the following errors out on a new buffer or window
-    (ignore-errors (htree:all-parents history))))
+    ;; ignore-errors for new buffer or window:
+    (ignore-errors (htree:all-parents history :owner (id buffer)))))
 
 ;; we could do more here.  Example: change the forwards command
 ;; if the history branches here.
