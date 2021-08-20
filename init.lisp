@@ -15,7 +15,8 @@
 		   (define-key map
 		     "M-x" 'execute-command
 		     "M-n" 'switch-buffer-next
-		     "M-p" 'switch-buffer-previous)))))
+		     "M-p" 'switch-buffer-previous
+		     "M-tab" 'switch-buffer-last)))))
 
 (define-configuration web-buffer
   ((default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")
