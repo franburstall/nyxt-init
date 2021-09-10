@@ -36,24 +36,33 @@
 		     (str:prune 50 url :ellipsis "…")
 		     (title buffer)))))))
 
+(defun format-status-tag (buffer)
+  "Format the buffer tag, if any."
+  (alexandria:if-let ((tag (show-buffer-tag buffer)))
+    (format nil "[~d]" tag)
+    ""))
+
 (defun my-format-status (window)
   (let ((buffer (current-buffer window)))
     (setf (style (status-buffer window)) (my-status-style))
     (spinneret:with-html-string
-     (:div :id "container"
-           (:div :id "controls"
-                 (:raw (my-format-status-buttons)))
-           (:div :class "arrow arrow-right"
-                 :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)"  "")
-           (:div :id "url"
-                 (:raw
-                  (format-status-load-status buffer)
-                  (my-format-status-url buffer)))
-           (:div :class "arrow arrow-left"
-                 :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)" "")
-           (:div :id "modes"
-		 :title (nyxt::list-modes buffer)
-		 "--")))))
+      (:div :id "container"
+            (:div :id "controls"
+                  (:raw (my-format-status-buttons)))
+            (:div :class "arrow arrow-right"
+                  :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)"  "")
+            (:div :id "url"
+                  (:raw
+                   (format-status-load-status buffer)
+                   (my-format-status-url buffer)))
+	    (:div :id "tag"
+		  (:raw
+		   (format-status-tag buffer)))
+            (:div :class "arrow arrow-left"
+                  :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)" "")
+            (:div :id "modes"
+		  :title (nyxt::list-modes buffer)
+		  "--")))))
 ;; TODO
 ;; better format status url (truncate the url)?
 
