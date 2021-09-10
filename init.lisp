@@ -1,6 +1,7 @@
 (in-package #:nyxt-user)
 
 
+(load (nyxt-init-file "buffer-tags.lisp"))
 (load (nyxt-init-file "style.lisp"))
 (load (nyxt-init-file "status.lisp"))
 (load (nyxt-init-file "fill-credentials.lisp"))
@@ -9,7 +10,7 @@
 (load-after-system :nx-search-engines (nyxt-init-file "search-engines.lisp"))
 
 (define-configuration (buffer)
-  ((default-modes `(emacs-mode ,@%slot-default%))
+  ((default-modes `(buffer-tag-mode emacs-mode ,@%slot-default%))
    ;; (download-engine :renderer)
    (password-interface (make-instance 'password:user-password-store-interface))
    (override-map (let ((map (make-keymap "override-map")))
