@@ -18,7 +18,10 @@
 		     "M-x" 'execute-command
 		     "M-n" 'switch-buffer-next
 		     "M-p" 'switch-buffer-previous
-		     "M-tab" 'switch-buffer-last)))))
+		     "M-tab" 'switch-buffer-last
+		     "C-h e" 'nyxt/message-mode:list-messages
+		     "C-x b" (make-command my/switch-buffer ()
+			       (switch-buffer :current-is-last-p t)))))))
 
 (define-configuration web-buffer
   ((default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")
