@@ -6,6 +6,7 @@
 (load (nyxt-init-file "fill-credentials.lisp"))
 
 (load-after-system :slynk (nyxt-init-file "slynk.lisp"))
+(load-after-system :nx-search-engines (nyxt-init-file "search-engines.lisp"))
 
 (define-configuration (buffer)
   ((default-modes `(emacs-mode ,@%slot-default%))
