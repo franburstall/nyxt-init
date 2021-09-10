@@ -86,8 +86,8 @@
       :clip-path "polygon(0 50%, 100% 100%, 100% 0)")
      ("#container"
       :display "grid"
-      ;; Columns: controls, arrow, url, arrow, modes
-      :grid-template-columns "50px 10px auto 10px 20px"
+      ;; Columns: controls, arrow, url, tag, arrow, modes
+      :grid-template-columns "50px 10px auto 25px 10px 20px"
       :overflow-y "hidden")
      ("#controls"
       :background-color "#313131"
@@ -106,6 +106,8 @@
       :margin-left "-10px")
      ("#url a.button:hover"
       :color "#ffff80")
+     ("#tag"
+      :color "#00C0FF")
      ("#modes"
       :background-color "#313131"
       :color "#818181"
