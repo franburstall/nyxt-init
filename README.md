@@ -7,6 +7,14 @@ Init files for the
 
 # Files
 
+## buffer-tags.lisp
+
+Quick and dirty tags for buffers.  Load this to get
+`buffer-tag-mode`.  When it is activated, `C-M-digit`
+assigns that digit to the current buffer as a tag and
+thereafter `C-digit` switches to that buffer.  Inspired by
+this [issue](https://github.com/atlas-engineer/nyxt/issues/1695).
+
 ## fill-credentials.lisp
 
 An attempt to auto-fill login credentials.  The entry point
