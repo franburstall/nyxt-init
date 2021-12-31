@@ -8,6 +8,7 @@
 ;; TODO:
 ;; - ensure buffer has only one tag (the most recent)?
 ;; - next/prev tagged buffer?  Not sure if this is really necessary.
+;; - serialise on exit?  Would need to store buffer ids rather than buffers.
 
 (in-package #:nyxt-user)
 
@@ -37,10 +38,10 @@
 (defmacro make-key-binds (i)
   `(progn
      (define-key buffer-tag-mode-map
-	 (format nil "C-M-~d" ,i) (make-command nil ()
+	 (format nil "C-M-~d" ,i) (make-command ,(make-symbol (format nil "set-buffer-tag-~d" i)) ()
 				    ,(format nil "Give current buffer tag ~d." i) (set-buffer-tag ,i)))
      (define-key buffer-tag-mode-map
-	 (format nil "C-~d" ,i) (make-command nil ()
+	 (format nil "C-~d" ,i) (make-command ,(make-symbol (format nil "switch-to-buffer-~d" i)) ()
 				  ,(format nil "Switch to buffer with tag ~d." i) (switch-buffer-by-tag ,i)))))
 
 ;; there must be a good way to do this but
