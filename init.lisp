@@ -6,6 +6,16 @@
 (load (nyxt-init-file "status.lisp"))
 (load (nyxt-init-file "fill-credentials.lisp"))
 
+(reset-asdf-registries)
+
+#-quicklisp
+(let ((quicklisp-init
+	(merge-pathnames "quicklisp/setup.lisp" (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
+
+(ql:quickload :slynk)
+
 (load-after-system :slynk (nyxt-init-file "slynk.lisp"))
 (load-after-system :nx-search-engines (nyxt-init-file "search-engines.lisp"))
 
