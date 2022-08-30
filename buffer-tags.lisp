@@ -35,35 +35,30 @@
 
 (defvar buffer-tag-mode-map (make-keymap "buffer-tag-mode-map"))
 
-(defmacro make-key-binds (i)
-  `(progn
-     (define-key buffer-tag-mode-map
-	 (format nil "C-M-~d" ,i) (make-command ,(make-symbol (format nil "set-buffer-tag-~d" i)) ()
-				    ,(format nil "Give current buffer tag ~d." i) (set-buffer-tag ,i)))
-     (define-key buffer-tag-mode-map
-	 (format nil "C-~d" ,i) (make-command ,(make-symbol (format nil "switch-to-buffer-~d" i)) ()
-				  ,(format nil "Switch to buffer with tag ~d." i) (switch-buffer-by-tag ,i)))))
+(defmacro make-key-binds (max)
+  "Create key binds for set-buffer-tag-* and friends."
+  (let (forms)
+    (dotimes (i max)
+      (push
+       `(define-key buffer-tag-mode-map
+	    (format nil "C-M-~d" ,i) (lambda-command ,(make-symbol (format nil "SET-BUFFER-TAG-~d" i)) ()
+				       ,(format nil "Give current buffer tag ~d." i) (set-buffer-tag ,i)))
+       forms)
+      (push
+       `(define-key buffer-tag-mode-map
+	    (format nil "C-~d" ,i) (lambda-command ,(make-symbol (format nil "SWITCH-TO-BUFFER-~d" i)) ()
+				     ,(format nil "Switch to buffer with tag ~d." i) (switch-buffer-by-tag ,i)))
+       forms))
+    `(progn ,@forms)))
 
-;; there must be a good way to do this but
-;; (dotimes (i 10) (make-key-binds i))
-;; is apparently not it, sigh.
-(make-key-binds 0)
-(make-key-binds 1)
-(make-key-binds 2)
-(make-key-binds 3)
-(make-key-binds 4)
-(make-key-binds 5)
-(make-key-binds 6)
-(make-key-binds 7)
-(make-key-binds 8)
-(make-key-binds 9)
+(make-key-binds 10)
 
 (define-mode buffer-tag-mode ()
   "Mode to allow quick and dirty buffer tagging.
 
 For n from 0 to 9, do C-M-n to give the current buffer tag n
 and C-n to then switch to it."
-  ((keymap-scheme (keymap:make-scheme
-                   scheme:cua buffer-tag-mode-map
-                   scheme:emacs buffer-tag-mode-map
-                   scheme:vi-normal buffer-tag-mode-map))))
+  ((keyscheme-map (keymaps:make-keyscheme-map
+                   nyxt/keyscheme:cua buffer-tag-mode-map
+                   nyxt/keyscheme:emacs buffer-tag-mode-map
+                   nyxt/keyscheme:vi-normal buffer-tag-mode-map))))
