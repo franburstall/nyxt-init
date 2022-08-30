@@ -13,8 +13,10 @@
 ;; TODO:
 ;; 1. Fix all limitations!
 
+(nyxt:define-package :fill-cred
+    (:documentation "Fill credentials on page using password interface."))
 
-(in-package :nyxt)
+(in-package :fill-cred)
 
 ;; Grab data from password-interface
 ;;
@@ -24,8 +26,8 @@
 (defun get-login (password-interface &key password-name service)
   "Return specific login for PASSWORD-NAME and SERVICE as string."
   (password:clip-username password-interface
-			  :password-name password-name
-			  :service service)
+				     :password-name password-name
+				     :service service)
   (trivial-clipboard:text))
 
 (defun get-password (password-interface &key password-name service)
@@ -84,36 +86,31 @@
   (focus-element "input[type=\"submit\"]"))
 
 ;; user-level entry point
-(define-command fill-credentials (&optional (buffer (current-buffer)))
+(define-command-global fill-credentials (&optional (buffer (current-buffer)))
   "Fill in login credentials in BUFFER."
-  (nyxt::password-debug-info)
-  (if (password-interface buffer)
-      (nyxt::with-password (password-interface buffer)
-	(alex:when-let ((nyxt::password-name
-		(first
-		 (ignore-errors
-		  (prompt
-		   :input (quri:uri-domain (url buffer))
-		   :sources
-		   (list
-		    (make-instance 'nyxt::password-source
-				   :buffer buffer
-				   :actions nil
-				   :password-instance
-				   (password-interface buffer)
-				   :filter #'prompter:submatches
-				   :filter-preprocessor nil)))))))
-	  (nyxt::insert-login (nyxt::get-login (password-interface buffer)
-						   :password-name nyxt::password-name))
-	  (nyxt::insert-pass (nyxt::get-password (password-interface buffer)
-						     :password-name nyxt::password-name))
-	  (nyxt::focus-submit)))
+  (nyxt/password-mode::password-debug-info)
+  (alex:if-let ((iface (nyxt/password-mode:password-interface buffer)))
+      (alex:when-let ((password-name
+		       (let ((nyxt::*interactive-p* t))
+			 (prompt1
+			  :input (quri:uri-domain (url buffer))
+			  :sources
+			  (list
+			   (make-instance 'nyxt/password-mode::password-source
+					  :buffer buffer
+					  :return-actions nil
+					  :password-instance iface
+					  :filter #'prompter:submatches
+					  :filter-preprocessor nil))))))
+	(insert-login (get-login iface :password-name password-name))
+	(insert-pass (get-password iface :password-name password-name))
+	(focus-submit))
       (echo-warning "No password manager found.")))
 
 (defun find-buffer-passwords (&optional (buffer (current-buffer)))
   "List passwords matching BUFFER domain."
   (let ((domain (quri:uri-domain (url buffer)))
-	(cands (password:list-passwords (password-interface buffer))))
+	(cands (password:list-passwords (nyxt/password-mode::password-interface buffer))))
     (when domain (remove-if-not (lambda (cand) (str:contains? domain cand)) cands))))
 
 ;; Suitable function for buffer-loaded-hook
