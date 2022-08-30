@@ -1,7 +1,8 @@
 (in-package #:nyxt-user)
 
 (define-nyxt-user-system-and-load nyxt-user/load-config-files
-  :components ("fill-credentials"))
+  :components ("fill-credentials"
+	       "buffer-tags"))
 ;; (load (nyxt-init-file "buffer-tags.lisp"))
 ;; (load (nyxt-init-file "style.lisp"))
 ;; (load (nyxt-init-file "status.lisp"))
@@ -39,7 +40,7 @@
 
 (define-configuration (buffer)
   ((default-modes `(
-		    ;; buffer-tag-mode
+		    buffer-tag-mode
 		    nyxt/emacs-mode:emacs-mode
 		    ,@%slot-value%))
    ;; (download-engine :renderer)
