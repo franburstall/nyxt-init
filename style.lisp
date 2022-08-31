@@ -4,21 +4,21 @@
 (in-package #:nyxt-user)
 
 ;; generalities: background, text colour, buttons and links
-(define-configuration (internal-buffer prompt-buffer editor-buffer panel-buffer)
-  ((style
-    (str:concat
-     %slot-default%
-     (cl-css:css
-      '((body
-	 :background-color "#212121"
-	 :color "#bdbdb3")
-	(hr
-	 :color "darkgray")
-	(|a:link|
-	 :color "#00C0FF")
-	(\.button
-	 :color "#333333"
-	 :background-color "#404040")))))))
+;; (define-configuration (internal-buffer prompt-buffer editor-buffer panel-buffer)
+;;   ((style
+;;     (str:concat
+;;      %slot-default%
+;;      (cl-css:css
+;;       '((body
+;; 	 :background-color "#212121"
+;; 	 :color "#bdbdb3")
+;; 	(hr
+;; 	 :color "darkgray")
+;; 	(|a:link|
+;; 	 :color "#00C0FF")
+;; 	(\.button
+;; 	 :color "#333333"
+;; 	 :background-color "#404040")))))))
 
 ;; message area
 (define-configuration window
