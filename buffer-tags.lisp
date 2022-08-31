@@ -6,7 +6,6 @@
 ;; C-n to switch to the buffer with tag n.
 
 ;; TODO:
-;; - ensure buffer has only one tag (the most recent)?
 ;; - next/prev tagged buffer?  Not sure if this is really necessary.
 ;; - serialise on exit?  Would need to store buffer ids rather than buffers.
 
@@ -25,7 +24,11 @@
 
 (defun set-buffer-tag (tag)
   "Assign TAG to current buffer."
-  (setf (aref *tagged-buffers* tag) (current-buffer))
+  (let ((buf (current-buffer)))
+    (dotimes (i 10)
+      (when (eq buf (aref *tagged-buffers* i))
+	(setf (aref *tagged-buffers* i) nil)))
+    (setf (aref *tagged-buffers* tag) buf))
   (nyxt::print-status)
   (echo "Tag ~d set." tag))
 
