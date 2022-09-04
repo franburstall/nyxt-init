@@ -29,12 +29,13 @@
                          :dark-p t
                          :background-color "#212121"
                          :on-background-color "#bdbdb3"
-                         :primary-color "rgb(170, 170, 170)"
-                         :on-primary-color "black"
+                         :primary-color "#aaaaaa"
+                         :on-primary-color "#1111bb"
                          :secondary-color "#313131"
-                         :on-secondary-color "#818181"
-                         :accent-color "#4184e4"
-                         :on-accent-color "black"))))
+                         :on-secondary-color "#adada3"
+                         :accent-color "#00C0FF"
+                         :on-accent-color "white"
+			 :font-family "Sans"))))
 
 (define-configuration (buffer)
   ((default-modes `(
