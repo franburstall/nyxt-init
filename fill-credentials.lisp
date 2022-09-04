@@ -90,22 +90,26 @@
   "Fill in login credentials in BUFFER."
   (nyxt/password-mode::password-debug-info)
   (alex:if-let ((iface (nyxt/password-mode:password-interface buffer)))
-      (alex:when-let ((password-name
-		       (let ((nyxt::*interactive-p* t))
-			 (prompt1
-			  :input (quri:uri-domain (url buffer))
-			  :sources
-			  (list
-			   (make-instance 'nyxt/password-mode::password-source
-					  :buffer buffer
-					  :return-actions nil
-					  :password-instance iface
-					  :filter #'prompter:submatches
-					  :filter-preprocessor nil))))))
+    (let ((domain (quri:uri-domain (url buffer)))
+	  (cands (find-buffer-passwords buffer)))
+      (alex:when-let* ((password-name
+			(if (eq (length cands) 1)
+			    (car cands)
+			    (let ((nyxt::*interactive-p* t))
+			      (prompt1
+			       :input domain
+			       :sources
+			       (list
+				(make-instance 'prompter:source
+					       :name "Matching passwords"
+					       :return-actions nil
+					       :constructor cands
+					       :filter #'prompter:submatches
+					       :filter-preprocessor nil)))))))
 	(insert-login (get-login iface :password-name password-name))
 	(insert-pass (get-password iface :password-name password-name))
-	(focus-submit))
-      (echo-warning "No password manager found.")))
+	(focus-submit)))
+    (echo-warning "No password manager found.")))
 
 (defun find-buffer-passwords (&optional (buffer (current-buffer)))
   "List passwords matching BUFFER domain."
@@ -117,9 +121,9 @@
 (defun fill-credentials-if-login-present (buffer)
   "Fire `fill-credentials' if BUFFER has a login field and we know a password."
   (declare (ignore buffer))
-  (when (and  (elt-p (str:join "," *username-selectors*))
-	      (find-buffer-passwords))
-      (fill-credentials)))
+  (when (and (elt-p (str:join "," *username-selectors*))
+	     (find-buffer-passwords))
+    (fill-credentials)))
 
 
 
