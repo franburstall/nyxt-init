@@ -55,7 +55,11 @@
 		     "C-h e" 'nyxt/message-mode:list-messages
 		     "C-x b" (lambda-command my/switch-buffer ()
 			       "Switch-buffer with expected buffer-order."
-			       (switch-buffer :current-is-last-p t)))))
+			       (switch-buffer :current-is-last-p t))
+		     "C-x k" 'delete-current-buffer
+		     "C-x C-k" 'delete-buffer
+		     "C-j" 'nyxt/hint-mode:follow-hint-new-buffer-focus)
+		   ))
    ;; (default-new-buffer-url "http://people.bath.ac.uk/feb/surfing.html")
    ;; (default-modes `(auto-mode ,@%slot-value%))
    (buffer-loaded-hook
