@@ -93,7 +93,7 @@
     (let ((domain (quri:uri-domain (url buffer)))
 	  (cands (find-buffer-passwords buffer)))
       (alex:when-let* ((password-name
-			(if (eq (length cands) 1)
+			(if (sera:single cands)
 			    (car cands)
 			    (let ((nyxt::*interactive-p* t))
 			      (prompt1
