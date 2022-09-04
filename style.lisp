@@ -21,6 +21,7 @@
 ;; 	 :background-color "#404040")))))))
 
 ;; message area
+#+nyxt-2
 (define-configuration window
   ((message-buffer-style
     (str:concat
@@ -32,6 +33,7 @@
 
 ;; prompt
 ;; Q do we want to see modes here? (I think not)
+#+nyxt-2
 (define-configuration prompt-buffer
   ((style (str:concat
 	   %slot-default%
@@ -68,7 +70,7 @@
 			  :color "#4184e4")))))))
 
 ;; status bar: adapted from https://gitlab.com/ambrevar/dotfiles/-/blob/master/.config/nyxt/init.lisp
-(defun my-status-style ()
+#+nyxt-2 (defun my-status-style ()
   (cl-css:css
    '((body
       :background "#151515"
@@ -130,6 +132,84 @@
       :color "#ffc000")
      (|\.has-history:hover|
       :color "#ffff80"))))
+
+#+nyxt-3
+(defun my-status-style ()
+  (theme:themed-css (theme *browser*)
+    (body
+      :font-size "14px"
+      :padding 0
+      :margin 0
+      :line-height "25px")
+     (\.loader
+      :border-width "2px"
+      :border-style "solid"
+      :border-color "transparent"
+      :border-top-color theme:accent
+      :border-left-color theme:accent
+      :border-radius "50%"
+      :display "inline-block"
+      :width "7px"
+      :height "7px"
+      :animation "spin 1s linear infinite")
+     ("@keyframes spin"
+      ("0%" :transform "rotate(0deg)")
+      ("100%" :transform "rotate(360deg)"))
+     (".arrow-right"
+      :clip-path "polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%)"
+      :margin-right "-10px")
+     (".arrow-left"
+      :clip-path "polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0% 50%)"
+      :margin-left "-10px")
+     ("#container"
+      :display "grid"
+      ;; Columns: controls, url, tag, modes
+      :grid-template-columns "55px auto 25px 30px"
+      :overflow-y "hidden")
+     ("#controls"
+      :background-color theme:secondary
+      :color theme:on-secondary
+      :padding-left "5px"
+      :overflow "hidden"
+      :white-space "nowrap")
+     ("#url"
+      :background-color theme:primary
+      :color theme:on-primary
+      :min-width "100px"
+      :text-overflow "ellipsis"
+      :overflow-x "hidden"
+      :white-space "nowrap"
+      :padding-left "15px"
+      :padding-right "10px"
+      :margin-left "0px")
+     ("#url a.button"
+      :color "inherit")
+     ("#tag"
+      :color theme:accent
+      :background theme:secondary
+      :margin-right 0px
+      :padding-right 0px
+      :text-align "right")
+     ("#modes" 
+      :background-color theme:secondary
+      :color theme:on-secondary
+      :text-align "right"
+      :padding-right "5px"
+      :text-overflow "ellipsis"
+      :overflow-x "hidden"
+      :white-space "nowrap")
+     (".button, .has-history"
+      :text-decoration "none"
+      :padding-left "2px"
+      :padding-right "2px"
+      :margin-left "2px"
+      :margin-right "2px")
+     (|\.button:hover|
+      :opacity 0.6)
+     (".button"
+      :color "inherit")
+     (".has-history"
+      :color theme:accent)))
 
 
 ;; special case: branch markers on the history tree
