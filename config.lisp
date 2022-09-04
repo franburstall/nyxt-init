@@ -68,7 +68,6 @@
 	    :initial-value %slot-value%))
    ))
 ;; prompt-buffer
-
 (define-configuration prompt-buffer
   ((hide-single-source-header-p t)))
 
@@ -84,3 +83,15 @@
 ;; password interface
 (define-configuration (nyxt/password-mode:password-mode)
   ((nyxt/password-mode:password-interface (make-instance 'password:password-store-interface))))
+
+;; link hints
+(define-configuration (nyxt/hint-mode:hint-mode)
+  ((nyxt/hint-mode:hints-alphabet "asdfhjkl")))
+
+;; bookmarks: open these in new buffer by default
+
+;; matching in sources
+;; (define-configuration prompter:source
+;;   ((filter #'prompter:submatches)
+;;    ;; (filter-preprocessor nil)
+;;    ))
