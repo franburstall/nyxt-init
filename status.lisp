@@ -34,9 +34,12 @@
 	 ;; :href (nyxt-url 'nyxt:copy-url)
 	 (if (str:emptyp url)
 	     (title buffer)
-	     (format nil " ~a — ~a"
+	     (format nil " ~a — ~a~@[ [~d]~]"
 		     (str:prune 50 url :ellipsis "…")
-		     (title buffer)))))))
+		     (title buffer)
+		     (when (find (url buffer) (remove buffer (buffer-list))
+                                      :test #'url-equal :key #'url)
+		       (id buffer))))))))
 
 (defun format-status-tag (buffer)
   "Format the buffer tag, if any."
@@ -44,6 +47,7 @@
     (format nil "[~d]" tag)
     ""))
 
+#+nyxt-2
 (defun my-format-status (window)
   (let ((buffer (current-buffer window)))
     (setf (style (status-buffer window)) (my-status-style))
@@ -66,30 +70,29 @@
 		  :title (nyxt::modes-string buffer)
 		  "--")))))
 
+#+nyxt-3
 (defmethod format-status ((status status-buffer))
   (let ((buffer (current-buffer (window status))))
     (setf (style status) (my-status-style))
     (spinneret:with-html-string
       (:div :id "container"
-            (:div :id "controls"
+            (:div :id "controls" :class "arrow-right"
                   (:raw (my-format-status-buttons)))
-            (:div :class "arrow arrow-right"
-                  :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)"  "")
+            ;; (:div :class "arrow arrow-right"
+            ;;       :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)"  "")
             (:div :id "url"
                   (:raw
                    (format-status-load-status status)
                    (my-format-status-url buffer)))
-	    (:div :id "tag"
+	    (:div :id "tag" :class "arrow-left"
 		  (:raw
 		   (format-status-tag buffer)))
-            (:div :class "arrow arrow-left"
-                  :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)" "")
+            ;; (:div :class "arrow arrow-left"
+            ;;       :style "background-color:rgb(21,21,21);background-color:rgb(49,49,49)" "")
             (:div :id "modes"
 		  :title (nyxt::modes-string buffer)
 		  "--")))))
-;; TODO
-;; better format status url (truncate the url)?
 
-
+#+nyxt-2
 (define-configuration window 
   ((status-formatter #'my-format-status)))
